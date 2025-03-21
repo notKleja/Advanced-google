@@ -31,7 +31,7 @@
       --button-bg-dark: #a9c3dc30;
       --select-bg-dark: #3c4145;
       --chevron-color-dark: #bdc1c6;
-      --search-color-dark: #ffffff; /* Default search color for dark mode */
+      --search-color-dark: #000000; /* Default search color for dark mode */
     }
 
     /* Default to light mode */
@@ -264,6 +264,13 @@
     .grayscale{
         filter: grayscale(1);
     }
+
+    .searchIcon{
+        display: block;
+        fill: var( --chevron-color);
+        width: 20px;
+        height: 20px;
+    }
   </style>
 </head>
 <body>
@@ -272,8 +279,11 @@
     <form id="searchForm" onsubmit="searchGoogle(event, false)">
       <div class="search-container">
         <button type="button" onclick="searchGoogle(null, false)">
-          <img src="https://www.gstatic.com/images/icons/material/system/1x/search_black_24dp.png" alt="Search">
-        </button>
+            <svg class="searchIcon" id="baseSvg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" focusable="false" viewBox="0 0 24 24" class="cr-iconset-svg-icon_" role="none">
+                <g>
+                       <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+                       </path>
+                     </g></svg>        </button>
         <input type="text" id="query" placeholder="" required oninput="updateButtonVisibility()">
       </div>
 
