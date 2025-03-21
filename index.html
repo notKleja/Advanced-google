@@ -348,7 +348,11 @@
     document.addEventListener('DOMContentLoaded', function() {
       const siteFilter = document.getElementById('siteFilter');
       const fileTypeFilter = document.getElementById('fileTypeFilter');
+      const queryInput = document.getElementById('query');
       
+      // Auto-focus the search input on page load
+      queryInput.focus();
+
       [siteFilter, fileTypeFilter].forEach(select => {
         const clearBtn = select.nextElementSibling;
         select.addEventListener('change', function() {
