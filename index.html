@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google search</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <style>
+     :root {
+      /* Light mode variables */
+      --background-color-light: #ffffff;
+      --input-background-light: #eef1f3;
+      --text-color-light: #3c4043;
+      --border-color-light: #ffffff00;
+      --shadow-color-light: rgba(32, 33, 36, 0);
+      --hover-border-light: #e0e4e7;
+      --button-bg-light: #eef1f3;
+      --select-bg-light: #eef1f3;
+      --chevron-color-light: #5f6368;
+      --search-color-light: #ffffff; /* Default search color for light mode */
+
+      /* Dark mode variables */
+      --background-color-dark: #222324;
+      --input-background-dark: #a9c3dc30;
+      --text-color-dark: #ffffff;
+      --border-color-dark: #5f636800;
+      --shadow-color-dark: rgba(0, 0, 0, 0.5);
+      --hover-border-dark: #b3d3e62a;
+      --button-bg-dark: #a9c3dc30;
+      --select-bg-dark: #a9c3dc30;
+      --chevron-color-dark: #bdc1c6;
+      --search-color-dark: #ffffff; /* Default search color for dark mode */
+    }
+
+    /* Default to light mode */
+    body {
+      --background-color: var(--background-color-light);
+      --input-background: var(--input-background-light);
+      --text-color: var(--text-color-light);
+      --border-color: var(--border-color-light);
+      --shadow-color: var(--shadow-color-light);
+      --hover-border: var(--hover-border-light);
+      --button-bg: var(--button-bg-light);
+      --select-bg: var(--select-bg-light);
+      --chevron-color: var(--chevron-color-light);
+      --search-color: var(--search-color-light);
+    }
+
+    /* Dark mode when preferred or toggled */
+    @media (prefers-color-scheme: dark) {
+      body:not(.light-mode) {
+        --background-color: var(--background-color-dark);
+        --input-background: var(--input-background-dark);
+        --text-color: var(--text-color-dark);
+        --border-color: var(--border-color-dark);
+        --shadow-color: var(--shadow-color-dark);
+        --hover-border: var(--hover-border-dark);
+        --button-bg: var(--button-bg-dark);
+        --select-bg: var(--select-bg-dark);
+        --chevron-color: var(--chevron-color-dark);
+        --search-color: var(--search-color-dark);
+      }
+    }
+
+    body.dark-mode {
+      --background-color: var(--background-color-dark);
+      --input-background: var(--input-background-dark);
+      --text-color: var(--text-color-dark);
+      --border-color: var(--border-color-dark);
+      --shadow-color: var(--shadow-color-dark);
+      --hover-border: var(--hover-border-dark);
+      --button-bg: var(--button-bg-dark);
+      --select-bg: var(--select-bg-dark);
+      --chevron-color: var(--chevron-color-dark);
+      --search-color: var(--search-color-dark);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      transition: all 0.3s ease;
+    }
+
+    .mode-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .mode-toggle .material-icons {
+      color: var(--text-color);
+      font-size: 24px;
+    }
+
+    .search-panel {
+      text-align: center;
+    }
+
+    .logo {
+      margin-bottom: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      border-radius: 24px;
+      padding: 5px 10px;
+      width: 760px;
+      margin: 0 auto;
+      background-color: var(--input-background);
+    }
+
+    .search-container input[type="text"] {
+      flex-grow: 1;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+      outline: none;
+      background: transparent;
+      color: var(--text-color);
+    }
+
+    .search-container button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 10px;
+      outline: none;
+      display: flex;
+    }
+
+    .search-container button img {
+      width: 20px;
+      height: 20px;
+      opacity: 0.4;
+      filter: invert(var(--dark-mode-invert, 0));
+    }
+
+    .buttons {
+      margin-top: 20px;
+    }
+
+    .buttons button {
+      background-color: var(--button-bg);
+      border: 0px solid var(--button-bg);
+      border-radius: 4px;
+      color: var(--text-color);
+      font-size: 14px;
+      margin: 5px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .buttons button:hover {
+      border: 0px solid var(--hover-border);
+      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    }
+
+    .row {
+      margin-top: 20px;
+      display: inline-flex;
+      width: 100%;
+      gap: 16px;
+      
+    }
+
+    .row button {
+      padding: 16px 8px;
+      font-size: 14px;
+      border-radius: 4px;
+      border: 0px solid var(--border-color);
+      background-color: var(--button-bg);
+      color: var(--text-color);
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .row button:hover {
+      border-color: var(--hover-border);
+    }
+
+    .combo-container {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      position: relative;
+      padding: 0;
+      width: 200px;
+    }
+
+    .combo-container select {
+      appearance: none;
+      width: 100%;
+      padding: 10px 32px 10px 12px;
+      border: 0px solid var(--border-color);
+      border-radius: 4px;
+      background-color: var(--select-bg);
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      color: var(--text-color);
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .combo-container select:hover {
+      border-color: var(--hover-border);
+    }
+
+    .combo-container select:focus {
+      border-color: var(--hover-border);
+      box-shadow: 0 0 0 2px rgba(var(--text-color-rgb, 0, 0, 0), 0.1);
+    }
+
+    .combo-container .google-chevron {
+      position: absolute;
+      right: 8px;
+      pointer-events: none;
+      font-size: 20px;
+      color: var(--chevron-color);
+    }
+
+    .combo-container .clear-btn {
+      position: absolute;
+      right: 28px;
+      background: none;
+      border: none;
+      font-size: 16px;
+      color: var(--chevron-color);
+      cursor: pointer;
+      padding: 0;
+      display: none;
+    }
+
+    .combo-container select:not([value=""]) + .clear-btn {
+      display: block;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    select::-ms-expand {
+      display: none;
+    }
+
+    select option, select optgroup {
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .grayscale{
+        filter: grayscale(1);
+    }
+  </style>
+</head>
+<body>
+  <div class="search-panel">
+    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google Logo" class="logo">
+    <form id="searchForm" onsubmit="searchGoogle(event, false)">
+      <div class="search-container">
+        <button type="button" onclick="searchGoogle(null, false)">
+          <img src="https://www.gstatic.com/images/icons/material/system/1x/search_black_24dp.png" alt="Search">
+        </button>
+        <input type="text" id="query" placeholder="" required oninput="updateButtonVisibility()">
+      </div>
+
+      <div class="buttons">
+        <button type="submit">Google Search</button>
+        <button type="button" onclick="searchGoogle(null, true)">Search in new page</button>
+      </div>
+
+      <div class="row">
+        <button type="button" onclick="modifyQuery('plus')">Exact word</button>
+        <button type="button" onclick="modifyQuery('exact')">Exact Sentence</button>
+        <button type="button" onclick="modifyQuery('exclude')">Exclude word</button>
+        <button type="button" onclick="modifyQuery('removeSelectionFilters')">Remove Selected Filters</button>
+      </div>
+      <div class="options">
+
+        <div class="row">
+            <div class="combo-container">
+                <select id="siteFilter" onchange="modifyQuery('site')">
+                  <option value="" disabled selected>Filter by Site</option>
+                  <optgroup label="Social & General">
+                    <option value="site:reddit.com">Reddit</option>
+                    <option value="site:twitter.com">Twitter</option>
+                    <option value="site:wikipedia.org">Wikipedia</option>
+                  </optgroup>
+                  <optgroup label="Development">
+                    <option value="site:stackoverflow.com">Stack Overflow</option>
+                    <option value="site:github.com">GitHub</option>
+                    <option value="site:developer.mozilla.org">MDN Web Docs</option>
+                    <option value="site:codepen.io">CodePen</option>
+                    <option value="site:dev.to">Dev.to</option>
+                  </optgroup>
+                  <optgroup label="Design">
+                    <option value="site:dribbble.com">Dribbble</option>
+                    <option value="site:behance.net">Behance</option>
+                    <option value="site:figma.com/community">Figma Community</option>
+                    <option value="site:uxdesign.cc">UX Design</option>
+                    <option value="site:smashingmagazine.com">Smashing Magazine</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option value="site:*.edu">Edu Sites</option>
+                    <option value="site:">Custom</option>
+                  </optgroup>
+                </select>
+                <button type="button" class="clear-btn" onclick="modifyQuery('removeSite')">×</button>
+                <span class="material-icons google-chevron">expand_more</span>
+              </div>
+      
+              <div class="combo-container">
+                <select id="fileTypeFilter" onchange="modifyQuery('filetype')">
+                  <option value="" disabled selected>Any File Type</option>
+                  <option value="filetype:pdf">PDF</option>
+                  <option value="filetype:doc">Word Doc</option>
+                  <option value="filetype:xls">Excel</option>
+                  <option value="filetype:ppt">PowerPoint</option>
+                  <option value="filetype:txt">Text</option>
+                  <option value="filetype:">Custom</option>
+                </select>
+                <button type="button" class="clear-btn" onclick="modifyQuery('removeFileType')">×</button>
+                <span class="material-icons google-chevron">expand_more</span>
+              </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const siteFilter = document.getElementById('siteFilter');
+      const fileTypeFilter = document.getElementById('fileTypeFilter');
+      
+      [siteFilter, fileTypeFilter].forEach(select => {
+        const clearBtn = select.nextElementSibling;
+        select.addEventListener('change', function() {
+          clearBtn.style.display = this.value ? 'block' : 'none';
+        });
+      });
+    });
+
+    let queryInput = document.getElementById('query');
+    let removeSiteBtn = document.getElementById('removeSiteBtn');
+    let removeFileTypeBtn = document.getElementById('removeFileTypeBtn');
+
+    function searchGoogle(event, openInNewTab) {
+      if (event) event.preventDefault();
+      const query = queryInput.value.trim();
+      if (query) {
+        const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        if (openInNewTab) {
+          window.open(googleSearchUrl, '_blank');
+        } else {
+          window.location.href = googleSearchUrl;
+        }
+      }
+    }
+
+    function modifyQuery(type) {
+      let currentQuery = queryInput.value.trim();
+      const selectionStart = queryInput.selectionStart;
+      const selectionEnd = queryInput.selectionEnd;
+      let selectedText = currentQuery.substring(selectionStart, selectionEnd);
+
+      if (type === 'plus' && selectedText) {
+        queryInput.value = currentQuery.substring(0, selectionStart) + 
+                          '+' + selectedText + 
+                          currentQuery.substring(selectionEnd);
+      } else if (type === 'exact' && selectedText) {
+        queryInput.value = currentQuery.substring(0, selectionStart) + 
+                          '"' + selectedText + '"' + 
+                          currentQuery.substring(selectionEnd);
+      } else if (type === 'exclude' && selectedText) {
+        queryInput.value = currentQuery.substring(0, selectionStart) + 
+                          '-' + selectedText + 
+                          currentQuery.substring(selectionEnd);
+      } else if (type === 'removeSelectionFilters' && selectedText) {
+        let cleanedText = selectedText
+          .replace(/["\-+]/g, '')
+          .replace(/\bsite:[^\s]+/g, '')
+          .replace(/\bfiletype:[^\s]+/g, '');
+        queryInput.value = currentQuery.substring(0, selectionStart) + 
+                          cleanedText.trim() + 
+                          currentQuery.substring(selectionEnd);
+      } else if (type === 'site') {
+        const siteFilter = document.getElementById('siteFilter').value;
+        if (siteFilter && siteFilter !== 'site:') {
+          const siteRegex = /\s?site:[^\s]+(\s+-inurl:\([^\)]+\))?/g;
+          currentQuery = currentQuery.replace(siteRegex, '').trim();
+          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + siteFilter;
+        } else if (siteFilter === 'site:' && !currentQuery.includes('site:')) {
+          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + 'site:';
+        }
+      } else if (type === 'removeSite') {
+        const siteRegex = /\s?site:[^\s]+(\s+-inurl:\([^\)]+\))?/g;
+        queryInput.value = currentQuery.replace(siteRegex, '').trim();
+        document.getElementById('siteFilter').value = '';
+      } else if (type === 'filetype') {
+        const fileTypeFilter = document.getElementById('fileTypeFilter').value;
+        if (fileTypeFilter && fileTypeFilter !== 'filetype:') {
+          const fileTypeRegex = /\s?filetype:[^\s]+/g;
+          currentQuery = currentQuery.replace(fileTypeRegex, '').trim();
+          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + fileTypeFilter;
+        } else if (fileTypeFilter === 'filetype:' && !currentQuery.includes('filetype:')) {
+          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + 'filetype:';
+        }
+      } else if (type === 'removeFileType') {
+        const fileTypeRegex = /\s?filetype:[^\s]+/g;
+        queryInput.value = currentQuery.replace(fileTypeRegex, '').trim();
+        document.getElementById('fileTypeFilter').value = '';
+      }
+      updateButtonVisibility();
+      queryInput.focus();
+    }
+
+    function updateButtonVisibility() {
+      const currentQuery = queryInput.value.trim();
+      const siteFilterValue = document.getElementById('siteFilter').value;
+      const fileTypeFilterValue = document.getElementById('fileTypeFilter').value;
+
+      removeSiteBtn.classList.toggle('hidden', !currentQuery.includes('site:') && siteFilterValue === '');
+      removeFileTypeBtn.classList.toggle('hidden', !currentQuery.includes('filetype:') && fileTypeFilterValue === '');
+    }
+
+    updateButtonVisibility();
+  </script>
+</body>
+</html>
