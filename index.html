@@ -29,7 +29,7 @@
       --shadow-color-dark: rgba(0, 0, 0, 0.5);
       --hover-border-dark: #b3d3e62a;
       --button-bg-dark: #bfc9d130;
-      --select-bg-dark: #3e4143;
+      --select-bg-dark: #2a2b2c;
       --chevron-color-dark: #bdc1c6;
       --search-color-dark: #000000; /* Default search color for dark mode */
     }
@@ -90,23 +90,14 @@
       transition: all 0.3s ease;
     }
 
-    .mode-toggle {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-    }
-
     .mode-toggle .material-icons {
       color: var(--text-color);
       font-size: 24px;
     }
-
+    
     .search-panel {
       text-align: center;
+      margin-top: 40px;
     }
 
     .logo {
@@ -170,28 +161,25 @@
     }
 
     .row {
-      margin-top: 20px;
+      margin-top: 16px;
       display: inline-flex;
       width: 100%;
       gap: 16px;
-      
     }
-
+    .row:first{
+        margin-top: 400px;
+    }
     .row button {
       padding: 16px 8px;
       font-size: 14px;
       border-radius: 4px;
-      border: 0px solid var(--border-color);
-      background-color: var(--button-bg);
+      border: 2px solid var(--button-bg);
+      background-color: transparent;
       color: var(--text-color);
       flex: 1;
       cursor: pointer;
     }
-
-    .row button:hover {
-      border-color: var(--hover-border);
-    }
-
+ 
     .combo-container {
       display: flex;
       flex: 1;
@@ -205,7 +193,7 @@
       appearance: none;
       width: 100%;
       padding: 10px 32px 10px 12px;
-      border: 0px solid var(--border-color);
+      border: 2px solid var(--button-bg);
       border-radius: 4px;
       background-color: var(--select-bg);
       font-family: 'Roboto', sans-serif;
@@ -271,6 +259,10 @@
         width: 20px;
         height: 20px;
     }
+
+    .Advanced-filters{
+        margin-top: 24px;
+    }
   </style>
 </head>
 <body>
@@ -291,15 +283,14 @@
         <button type="submit">Google Search</button>
         <button type="button" onclick="searchGoogle(null, true)">Search in new page</button>
       </div>
-
-      <div class="row">
+<div class="Advanced-filters">
+    <div class="row">
         <button type="button" onclick="modifyQuery('plus')">Exact word</button>
         <button type="button" onclick="modifyQuery('exact')">Exact Sentence</button>
         <button type="button" onclick="modifyQuery('exclude')">Exclude word</button>
         <button type="button" onclick="modifyQuery('removeSelectionFilters')">Remove Selected Filters</button>
       </div>
       <div class="options">
-
         <div class="row">
             <div class="combo-container">
                 <select id="siteFilter" onchange="modifyQuery('site')">
@@ -346,8 +337,9 @@
                 <span class="material-icons google-chevron">expand_more</span>
               </div>
         </div>
-
       </div>
+</div>
+
     </form>
   </div>
 
