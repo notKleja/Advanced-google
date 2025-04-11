@@ -265,6 +265,31 @@
     .Advanced-filters{
         margin-top: 24px;
     }
+
+    #invisible-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 200px; /* Small clickable area */
+  opacity: 0; /* Invisible */
+  z-index: 1000; /* Above other elements */
+  cursor: pointer;
+}
+
+/* Optional: Style for full-screen content if you want to display something */
+.fullscreen-content {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000000; /* Pure black background like YouTube */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input[type="file"] {
+  display: none !important;
+}
   </style>
 </head>
 <body>
@@ -344,6 +369,7 @@
 
     </form>
   </div>
+  <div id="invisible-footer"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -446,6 +472,109 @@
     }
 
     updateButtonVisibility();
+
+    
   </script>
+
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+  const invisibleFooter = document.getElementById('invisible-footer');
+  let isFullscreen = false;
+  let originalDisplayStates = new Map(); // Store original display states
+
+  invisibleFooter.addEventListener('click', function() {
+    if (!isFullscreen) {
+      // Store original display states before hiding
+      document.querySelectorAll('body > *:not(#invisible-footer)').forEach(el => {
+        originalDisplayStates.set(el, window.getComputedStyle(el).display);
+        el.style.display = 'none';
+      });
+
+      // Enter native full-screen mode
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
+        document.documentElement.mozRequestFullScreen();
+      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
+        document.documentElement.webkitRequestFullscreen();
+      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
+        document.documentElement.msRequestFullscreen();
+      }
+
+      // Create a full-screen black background div
+      const fullscreenDiv = document.createElement('div');
+      fullscreenDiv.id = 'fullscreen-content';
+      fullscreenDiv.className = 'fullscreen-content';
+      document.body.appendChild(fullscreenDiv);
+
+      isFullscreen = true;
+
+      // Allow clicking the black background to exit full-screen
+      fullscreenDiv.addEventListener('click', exitFullscreen);
+    }
+  });
+
+  // Function to exit full-screen mode
+  function exitFullscreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement || 
+        document.mozFullScreenElement || document.msFullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) { // Firefox
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) { // IE/Edge
+        document.msExitFullscreen();
+      }
+    }
+
+    // Restore original content with stored display states
+    document.querySelectorAll('body > *:not(#invisible-footer):not(#fullscreen-content)').forEach(el => {
+      // Explicitly hide any upload field to prevent it from appearing
+      if (el.matches('input[type="file"]')) {
+        el.style.display = 'none';
+      } else {
+        // Restore the original display state or default to 'block' for known elements
+        const originalDisplay = originalDisplayStates.get(el) || 'block';
+        el.style.display = originalDisplay;
+      }
+    });
+
+    // Remove the full-screen div
+    const fullscreenDiv = document.getElementById('fullscreen-content');
+    if (fullscreenDiv) {
+      fullscreenDiv.remove();
+    }
+
+    // Clear the display states map
+    originalDisplayStates.clear();
+    isFullscreen = false;
+  }
+
+  // Exit full-screen when ESC key is pressed or browser's full-screen is toggled off
+  document.addEventListener('fullscreenchange', function() {
+    if (!document.fullscreenElement && isFullscreen) {
+      exitFullscreen();
+    }
+  });
+  document.addEventListener('webkitfullscreenchange', function() {
+    if (!document.webkitFullscreenElement && isFullscreen) {
+      exitFullscreen();
+    }
+  });
+  document.addEventListener('mozfullscreenchange', function() {
+    if (!document.mozFullScreenElement && isFullscreen) {
+      exitFullscreen();
+    }
+  });
+  document.addEventListener('MSFullscreenChange', function() {
+    if (!document.msFullscreenElement && isFullscreen) {
+      exitFullscreen();
+    }
+  });
+});
+  </script>
+
 </body>
 </html>
