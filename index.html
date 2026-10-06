@@ -73,76 +73,58 @@
               <div class="filter-control">
                 <select id="fileTypeFilter">
                   <option value="">Any file type</option>
-                  <optgroup label="Documents and ebooks">
+                  <optgroup label="Documents and text">
                     <option value="pdf">PDF</option>
+                    <option value="ps">PostScript (PS)</option>
                     <option value="doc">Word document (DOC)</option>
                     <option value="docx">Word document (DOCX)</option>
                     <option value="odt">OpenDocument text (ODT)</option>
                     <option value="rtf">Rich Text Format (RTF)</option>
                     <option value="txt">Plain text (TXT)</option>
-                    <option value="epub">Ebook (EPUB)</option>
+                    <option value="text">Plain text (TEXT)</option>
+                    <option value="hwp">Hancom Hanword (HWP)</option>
+                    <option value="tex">TeX/LaTeX (TEX)</option>
                   </optgroup>
-                  <optgroup label="Spreadsheets">
+                  <optgroup label="Spreadsheets and data">
                     <option value="xls">Excel spreadsheet (XLS)</option>
                     <option value="xlsx">Excel spreadsheet (XLSX)</option>
                     <option value="ods">OpenDocument spreadsheet (ODS)</option>
                     <option value="csv">Comma-separated values (CSV)</option>
+                    <option value="xml">XML data</option>
                   </optgroup>
                   <optgroup label="Presentations">
                     <option value="ppt">PowerPoint presentation (PPT)</option>
                     <option value="pptx">PowerPoint presentation (PPTX)</option>
                     <option value="odp">OpenDocument presentation (ODP)</option>
                   </optgroup>
-                  <optgroup label="Images and design">
-                    <option value="jpg">JPEG image (JPG)</option>
-                    <option value="png">PNG image</option>
-                    <option value="gif">GIF image</option>
-                    <option value="svg">Scalable vector graphic (SVG)</option>
-                    <option value="webp">WebP image</option>
-                    <option value="tiff">TIFF image</option>
-                    <option value="psd">Photoshop document (PSD)</option>
-                  </optgroup>
-                  <optgroup label="Audio and video">
-                    <option value="mp3">MP3 audio</option>
-                    <option value="wav">WAV audio</option>
-                    <option value="mp4">MP4 video</option>
-                    <option value="webm">WebM video</option>
-                    <option value="mov">QuickTime video (MOV)</option>
-                  </optgroup>
-                  <optgroup label="Archives and disk images">
-                    <option value="zip">ZIP archive</option>
-                    <option value="rar">RAR archive</option>
-                    <option value="7z">7-Zip archive</option>
-                    <option value="tar">TAR archive</option>
-                    <option value="gz">Gzip archive</option>
-                    <option value="iso">Disk image (ISO)</option>
-                  </optgroup>
-                  <optgroup label="Data and configuration">
-                    <option value="json">JSON data</option>
-                    <option value="xml">XML data</option>
-                    <option value="yaml">YAML configuration</option>
-                    <option value="sql">SQL database script</option>
-                    <option value="sqlite">SQLite database</option>
-                  </optgroup>
-                  <optgroup label="Code and web">
+                  <optgroup label="Web and markup">
                     <option value="html">HTML document</option>
-                    <option value="css">CSS stylesheet</option>
-                    <option value="js">JavaScript source</option>
-                    <option value="ts">TypeScript source</option>
+                    <option value="htm">HTML document (HTM)</option>
+                    <option value="svg">Scalable vector graphic (SVG)</option>
+                    <option value="wml">Wireless Markup Language (WML)</option>
+                    <option value="wap">Wireless markup file (WAP)</option>
+                  </optgroup>
+                  <optgroup label="Geospatial">
+                    <option value="kml">Google Earth (KML)</option>
+                    <option value="kmz">Google Earth archive (KMZ)</option>
+                    <option value="gpx">GPS Exchange Format (GPX)</option>
+                  </optgroup>
+                  <optgroup label="Source code">
+                    <option value="bas">BASIC source</option>
+                    <option value="c">C source</option>
+                    <option value="cc">C++ source (CC)</option>
+                    <option value="cpp">C++ source (CPP)</option>
+                    <option value="cxx">C++ source (CXX)</option>
+                    <option value="h">C/C++ header (H)</option>
+                    <option value="hpp">C++ header (HPP)</option>
+                    <option value="cs">C# source</option>
                     <option value="py">Python source</option>
                     <option value="java">Java source</option>
-                    <option value="cpp">C++ source</option>
-                    <option value="go">Go source</option>
-                    <option value="rs">Rust source</option>
-                  </optgroup>
-                  <optgroup label="Other">
-                    <option value="custom">Custom file type</option>
+                    <option value="pl">Perl source</option>
                   </optgroup>
                 </select>
                 <button type="button" class="clear-button" id="clearFileType" aria-label="Clear file type filter" hidden>×</button>
               </div>
-              <label class="visually-hidden" for="customFileType">Custom file extension</label>
-              <input class="custom-filter" id="customFileType" type="text" placeholder="Extension, such as csv" hidden>
             </div>
           </div>
           <p id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></p>

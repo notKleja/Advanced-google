@@ -3,7 +3,6 @@ const searchForm = document.querySelector('#searchForm');
 const siteFilter = document.querySelector('#siteFilter');
 const fileTypeFilter = document.querySelector('#fileTypeFilter');
 const customSite = document.querySelector('#customSite');
-const customFileType = document.querySelector('#customFileType');
 const clearSiteButton = document.querySelector('#clearSite');
 const clearFileTypeButton = document.querySelector('#clearFileType');
 const filterStatus = document.querySelector('#filterStatus');
@@ -33,18 +32,20 @@ function setOperator(name, value) {
   queryInput.focus();
 }
 
-function selectKnownValue(select, customInput, value) {
+function selectKnownValue(select, value, customInput = null) {
   const known = [...select.options].some((option) => option.value === value);
-  select.value = value && known ? value : value ? 'custom' : '';
-  customInput.hidden = select.value !== 'custom';
-  customInput.value = select.value === 'custom' ? value : '';
+  select.value = value && known ? value : value && customInput ? 'custom' : '';
+  if (customInput) {
+    customInput.hidden = select.value !== 'custom';
+    customInput.value = select.value === 'custom' ? value : '';
+  }
 }
 
 function syncFilterControls(announce = false) {
   const site = readOperator(sitePattern);
   const fileType = readOperator(fileTypePattern);
-  selectKnownValue(siteFilter, customSite, site);
-  selectKnownValue(fileTypeFilter, customFileType, fileType);
+  selectKnownValue(siteFilter, site, customSite);
+  selectKnownValue(fileTypeFilter, fileType);
   clearSiteButton.hidden = !site;
   clearFileTypeButton.hidden = !fileType;
 
@@ -54,13 +55,13 @@ function syncFilterControls(announce = false) {
   }
 }
 
-function handleFilterChange(select, customInput, operator) {
-  if (select.value === 'custom') {
+function handleFilterChange(select, operator, customInput = null) {
+  if (select.value === 'custom' && customInput) {
     customInput.hidden = false;
     customInput.focus();
     return;
   }
-  customInput.hidden = true;
+  if (customInput) customInput.hidden = true;
   setOperator(operator, select.value);
   syncFilterControls(true);
 }
@@ -112,10 +113,9 @@ document.querySelectorAll('[data-selection-action]').forEach((button) => {
   button.addEventListener('click', () => applySelectionAction(button.dataset.selectionAction));
 });
 queryInput.addEventListener('input', () => syncFilterControls());
-siteFilter.addEventListener('change', () => handleFilterChange(siteFilter, customSite, 'site'));
-fileTypeFilter.addEventListener('change', () => handleFilterChange(fileTypeFilter, customFileType, 'filetype'));
+siteFilter.addEventListener('change', () => handleFilterChange(siteFilter, 'site', customSite));
+fileTypeFilter.addEventListener('change', () => handleFilterChange(fileTypeFilter, 'filetype'));
 customSite.addEventListener('change', () => setOperator('site', customSite.value.trim().replace(/^site:/i, '')));
-customFileType.addEventListener('change', () => setOperator('filetype', customFileType.value.trim().replace(/^\./, '').replace(/^filetype:/i, '')));
 clearSiteButton.addEventListener('click', () => setOperator('site', ''));
 clearFileTypeButton.addEventListener('click', () => setOperator('filetype', ''));
 
