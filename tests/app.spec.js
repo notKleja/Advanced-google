@@ -23,18 +23,19 @@ test('supports custom filters and clearing them', async ({ page }) => {
   await expect(page.locator('#query')).toHaveValue('release notes');
 });
 
-test('groups Google-indexable file types and replaces the active type', async ({ page }) => {
+test('groups common Google-indexable file types and replaces the active type', async ({ page }) => {
   await page.goto('/');
-  await expect(page.locator('#fileTypeFilter optgroup')).toHaveCount(6);
+  await expect(page.locator('#fileTypeFilter optgroup')).toHaveCount(3);
   await expect(page.locator('#fileTypeFilter optgroup').first()).toHaveAttribute('label', 'Documents and text');
-  await expect(page.locator('#fileTypeFilter option[value="mp4"]')).toHaveCount(0);
-  await expect(page.locator('#fileTypeFilter option[value="zip"]')).toHaveCount(0);
+  await expect(page.locator('#fileTypeFilter option[value="tex"]')).toHaveCount(0);
+  await expect(page.locator('#fileTypeFilter option[value="py"]')).toHaveCount(0);
+  await expect(page.locator('#fileTypeFilter option[value="kml"]')).toHaveCount(0);
   await expect(page.locator('#fileTypeFilter option[value="custom"]')).toHaveCount(0);
   await page.locator('#query').fill('developer guide');
   await page.locator('#fileTypeFilter').selectOption('docx');
   await expect(page.locator('#query')).toHaveValue('developer guide filetype:docx');
-  await page.locator('#fileTypeFilter').selectOption('xml');
-  await expect(page.locator('#query')).toHaveValue('developer guide filetype:xml');
+  await page.locator('#fileTypeFilter').selectOption('csv');
+  await expect(page.locator('#query')).toHaveValue('developer guide filetype:csv');
 });
 
 test('quotes selected text and creates the expected search URL', async ({ page, context }) => {
