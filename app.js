@@ -127,6 +127,8 @@ let isFullscreen = false;
 function exitFullscreen() {
   document.querySelector('#fullscreen-content')?.remove();
   isFullscreen = false;
+  window.clearTimeout(cursorTimer);
+  document.body.classList.remove('fullscreen-active', 'cursor-hidden');
   invisibleFooter.setAttribute('aria-label', 'Enter distraction-free fullscreen');
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
 }
@@ -139,6 +141,8 @@ function enterFullscreen() {
   fullscreenContent.addEventListener('click', exitFullscreen);
   document.body.append(fullscreenContent);
   isFullscreen = true;
+  document.body.classList.add('fullscreen-active');
+  resetCursorTimer();
   invisibleFooter.setAttribute('aria-label', 'Exit distraction-free fullscreen');
   document.documentElement.requestFullscreen?.().catch(() => {});
 }
@@ -152,10 +156,11 @@ let cursorTimer;
 function resetCursorTimer() {
   document.body.classList.remove('cursor-hidden');
   window.clearTimeout(cursorTimer);
-  cursorTimer = window.setTimeout(() => document.body.classList.add('cursor-hidden'), 5000);
+  if (isFullscreen) {
+    cursorTimer = window.setTimeout(() => document.body.classList.add('cursor-hidden'), 5000);
+  }
 }
 
 ['pointermove', 'pointerdown', 'keydown', 'touchstart'].forEach((eventName) => {
   document.addEventListener(eventName, resetCursorTimer, { passive: true });
 });
-resetCursorTimer();

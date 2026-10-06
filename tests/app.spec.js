@@ -58,11 +58,18 @@ test('fits the search controls on a mobile viewport', async ({ page }) => {
   const box = await page.locator('.search-container').boundingBox();
   expect(box.x).toBeGreaterThanOrEqual(0);
   expect(box.x + box.width).toBeLessThanOrEqual(390);
+  await page.locator('#fileTypeFilter').click();
+  await expect(page.locator('#fullscreen-content')).toHaveCount(0);
+  await page.keyboard.press('Escape');
 });
 
-test('hides the cursor after five seconds of inactivity', async ({ page }) => {
+test('hides the cursor only after inactivity in fullscreen', async ({ page }) => {
+  await page.clock.install();
   await page.goto('/');
-  await page.waitForTimeout(5100);
+  await page.clock.fastForward(5100);
+  await expect(page.locator('body')).not.toHaveClass(/cursor-hidden/);
+  await page.locator('#invisible-footer').click({ position: { x: 10, y: 190 } });
+  await page.clock.fastForward(5100);
   await expect(page.locator('body')).toHaveClass(/cursor-hidden/);
   await page.mouse.move(10, 10);
   await expect(page.locator('body')).not.toHaveClass(/cursor-hidden/);
