@@ -1,580 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Google Search</title>
-    <link rel="icon" href="https://www.google.com/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-  <style>
-     :root {
-      /* Light mode variables */
-      --background-color-light: #ffffff;
-      --input-background-light: #eef1f3;
-      --text-color-light: #3c4043;
-      --border-color-light: #ffffff00;
-      --shadow-color-light: rgba(32, 33, 36, 0);
-      --hover-border-light: #e0e4e7;
-      --button-bg-light: #eef1f3;
-      --select-bg-light: #eef1f3;
-      --chevron-color-light: #5f6368;
-      --search-color-light: #ffffff; /* Default search color for light mode */
-
-      /* Dark mode variables */
-      --background-color-dark: #2a2b2c;
-      --input-background-dark: #d6e2eb3e;
-      --text-color-dark: #ffffff;
-      --border-color-dark: #5f636800;
-      --shadow-color-dark: rgba(0, 0, 0, 0.5);
-      --hover-border-dark: #b3d3e62a;
-      --button-bg-dark: #bfc9d130;
-      --select-bg-dark: #2a2b2c;
-      --chevron-color-dark: #bdc1c6;
-      --search-color-dark: #000000; /* Default search color for dark mode */
-    }
-
-    /* Default to light mode */
-    body {
-      --background-color: var(--background-color-light);
-      --input-background: var(--input-background-light);
-      --text-color: var(--text-color-light);
-      --border-color: var(--border-color-light);
-      --shadow-color: var(--shadow-color-light);
-      --hover-border: var(--hover-border-light);
-      --button-bg: var(--button-bg-light);
-      --select-bg: var(--select-bg-light);
-      --chevron-color: var(--chevron-color-light);
-      --search-color: var(--search-color-light);
-    }
-
-    /* Dark mode when preferred or toggled */
-    @media (prefers-color-scheme: dark) {
-      body:not(.light-mode) {
-        --background-color: var(--background-color-dark);
-        --input-background: var(--input-background-dark);
-        --text-color: var(--text-color-dark);
-        --border-color: var(--border-color-dark);
-        --shadow-color: var(--shadow-color-dark);
-        --hover-border: var(--hover-border-dark);
-        --button-bg: var(--button-bg-dark);
-        --select-bg: var(--select-bg-dark);
-        --chevron-color: var(--chevron-color-dark);
-        --search-color: var(--search-color-dark);
-      }
-    }
-
-    body.dark-mode {
-      --background-color: var(--background-color-dark);
-      --input-background: var(--input-background-dark);
-      --text-color: var(--text-color-dark);
-      --border-color: var(--border-color-dark);
-      --shadow-color: var(--shadow-color-dark);
-      --hover-border: var(--hover-border-dark);
-      --button-bg: var(--button-bg-dark);
-      --select-bg: var(--select-bg-dark);
-      --chevron-color: var(--chevron-color-dark);
-      --search-color: var(--search-color-dark);
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--background-color);
-      color: var(--text-color);
-      transition: all 0.3s ease;
-    }
-
-    .mode-toggle .material-icons {
-      color: var(--text-color);
-      font-size: 24px;
-    }
-    
-    .search-panel {
-      text-align: center;
-      margin-top: 40px;
-    }
-
-    .logo {
-      margin-bottom: 20px;
-    }
-
-    .search-container {
-      display: flex;
-      align-items: center;
-      border-radius: 24px;
-      padding: 5px 10px;
-      width: 760px;
-      margin: 0 auto;
-      background-color: var(--input-background);
-    }
-
-    .search-container input[type="text"] {
-      flex-grow: 1;
-      padding: 10px;
-      border: none;
-      font-size: 16px;
-      outline: none;
-      background: transparent;
-      color: var(--text-color);
-    }
-
-    .search-container button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0 10px;
-      outline: none;
-      display: flex;
-    }
-
-    .search-container button img {
-      width: 20px;
-      height: 20px;
-      opacity: 0.4;
-      filter: invert(var(--dark-mode-invert, 0));
-    }
-
-    .buttons {
-      margin-top: 20px;
-    }
-
-    .buttons button {
-      background-color: var(--button-bg);
-      border: 0px solid var(--button-bg);
-      border-radius: 4px;
-      color: var(--text-color);
-      font-size: 14px;
-      margin: 5px;
-      padding: 10px 20px;
-      cursor: pointer;
-      min-width: 160px!important;
-    }
-
-    .buttons button:hover {
-      border: 0px solid var(--hover-border);
-      box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    }
-
-    .row {
-      margin-top: 16px;
-      display: inline-flex;
-      width: 100%;
-      gap: 16px;
-    }
-    .row:first{
-        margin-top: 400px;
-    }
-    .row button {
-      padding: 10px 8px;
-      font-size: 14px;
-      border-radius: 4px;
-      border: 2px solid var(--button-bg);
-      background-color: transparent;
-      color: var(--text-color);
-      flex: 1;
-      cursor: pointer;
-    }
- 
-    .combo-container {
-      display: flex;
-      flex: 1;
-      align-items: center;
-      position: relative;
-      padding: 0;
-      width: 200px;
-    }
-
-    .combo-container select {
-      appearance: none;
-      width: 100%;
-      padding: 10px 32px 10px 12px;
-      border: 2px solid var(--button-bg);
-      border-radius: 4px;
-      background-color: var(--select-bg);
-      font-family: 'Roboto', sans-serif;
-      font-size: 14px;
-      color: var(--text-color);
-      cursor: pointer;
-      outline: none;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .combo-container select:hover {
-      border-color: var(--hover-border);
-    }
-
-    .combo-container select:focus {
-      border-color: var(--hover-border);
-      box-shadow: 0 0 0 2px rgba(var(--text-color-rgb, 0, 0, 0), 0.1);
-    }
-
-    .combo-container .google-chevron {
-      position: absolute;
-      right: 8px;
-      pointer-events: none;
-      font-size: 20px;
-      color: var(--chevron-color);
-    }
-
-    .combo-container .clear-btn {
-      position: absolute;
-      right: 28px;
-      background: none;
-      border: none;
-      font-size: 16px;
-      color: var(--chevron-color);
-      cursor: pointer;
-      padding: 0;
-      display: none;
-    }
-
-    .combo-container select:not([value=""]) + .clear-btn {
-      display: block;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    select::-ms-expand {
-      display: none;
-    }
-
-    select option, select optgroup {
-      font-family: 'Roboto', sans-serif;
-    }
-
-    .grayscale{
-        filter: grayscale(1);
-    }
-
-    .searchIcon{
-        display: block;
-        fill: var( --chevron-color);
-        width: 20px;
-        height: 20px;
-    }
-
-    .Advanced-filters{
-        margin-top: 24px;
-    }
-
-    #invisible-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 200px; /* Small clickable area */
-  opacity: 0; /* Invisible */
-  z-index: 1000; /* Above other elements */
-  cursor: pointer;
-}
-
-/* Optional: Style for full-screen content if you want to display something */
-.fullscreen-content {
-  width: 100vw;
-  height: 100vh;
-  background-color: #000000; /* Pure black background like YouTube */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-input[type="file"] {
-  display: none !important;
-}
-  </style>
-</head>
-<body>
-  <div class="search-panel">
-    <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png" alt="Google Logo" class="logo">
-    <form id="searchForm" onsubmit="searchGoogle(event, false)">
-      <div class="search-container">
-        <button type="button" onclick="searchGoogle(null, false)">
-            <svg class="searchIcon" id="baseSvg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" focusable="false" viewBox="0 0 24 24" class="cr-iconset-svg-icon_" role="none">
-                <g>
-                       <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-                       </path>
-                     </g></svg>        </button>
-        <input type="text" id="query" placeholder="" required oninput="updateButtonVisibility()">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>Advanced Google Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="search-panel">
+      <div class="logo" aria-label="Google">
+        <span class="blue">G</span><span class="red">o</span><span class="yellow">o</span><span class="blue">g</span><span class="green">l</span><span class="red">e</span>
       </div>
-
-      <div class="buttons">
-        <button type="submit">Google Search</button>
-        <button type="button" onclick="searchGoogle(null, true)">Search in new page</button>
-      </div>
-<div class="Advanced-filters">
-    <div class="row">
-        <button type="button" onclick="modifyQuery('plus')">Exact word</button>
-        <button type="button" onclick="modifyQuery('exact')">Exact Sentence</button>
-        <button type="button" onclick="modifyQuery('exclude')">Exclude word</button>
-        <button type="button" onclick="modifyQuery('removeSelectionFilters')">Remove Selected Filters</button>
-      </div>
-      <div class="options">
-        <div class="row">
-            <div class="combo-container">
-                <select id="siteFilter" onchange="modifyQuery('site')">
-                  <option value="" disabled selected>Filter by Site</option>
-                  <optgroup label="Social & General">
-                    <option value="site:reddit.com">Reddit</option>
-                    <option value="site:twitter.com">Twitter</option>
-                    <option value="site:wikipedia.org">Wikipedia</option>
+      <form id="searchForm">
+        <div class="search-container">
+          <button class="icon-button" id="searchIconButton" type="button" aria-label="Search">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16a6.47 6.47 0 0 0 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5ZM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14Z"/></svg>
+          </button>
+          <label class="visually-hidden" for="query">Search query</label>
+          <input type="search" id="query" autocomplete="off" required autofocus>
+        </div>
+        <div class="primary-actions">
+          <button type="submit">Google Search</button>
+          <button type="button" id="newTabButton">Search in new tab</button>
+        </div>
+        <section class="advanced-filters" aria-labelledby="advancedFiltersHeading">
+          <h2 id="advancedFiltersHeading">Advanced filters</h2>
+          <div class="action-row">
+            <button type="button" data-selection-action="exact">Exact phrase</button>
+            <button type="button" data-selection-action="exclude">Exclude selection</button>
+            <button type="button" data-selection-action="clear">Remove selection filters</button>
+          </div>
+          <div class="filter-row">
+            <div class="filter-group">
+              <label for="siteFilter">Site</label>
+              <div class="filter-control">
+                <select id="siteFilter">
+                  <option value="">Any site</option>
+                  <optgroup label="Social and general">
+                    <option value="reddit.com">Reddit</option>
+                    <option value="twitter.com">Twitter</option>
+                    <option value="wikipedia.org">Wikipedia</option>
                   </optgroup>
                   <optgroup label="Development">
-                    <option value="site:stackoverflow.com">Stack Overflow</option>
-                    <option value="site:github.com">GitHub</option>
-                    <option value="site:developer.mozilla.org">MDN Web Docs</option>
-                    <option value="site:codepen.io">CodePen</option>
-                    <option value="site:dev.to">Dev.to</option>
+                    <option value="stackoverflow.com">Stack Overflow</option>
+                    <option value="github.com">GitHub</option>
+                    <option value="developer.mozilla.org">MDN Web Docs</option>
+                    <option value="codepen.io">CodePen</option>
+                    <option value="dev.to">Dev.to</option>
                   </optgroup>
                   <optgroup label="Design">
-                    <option value="site:dribbble.com">Dribbble</option>
-                    <option value="site:behance.net">Behance</option>
-                    <option value="site:figma.com/community">Figma Community</option>
-                    <option value="site:uxdesign.cc">UX Design</option>
-                    <option value="site:smashingmagazine.com">Smashing Magazine</option>
+                    <option value="dribbble.com">Dribbble</option>
+                    <option value="behance.net">Behance</option>
+                    <option value="figma.com/community">Figma Community</option>
+                    <option value="uxdesign.cc">UX Design</option>
+                    <option value="smashingmagazine.com">Smashing Magazine</option>
                   </optgroup>
                   <optgroup label="Other">
-                    <option value="site:*.edu">Edu Sites</option>
-                    <option value="site:">Custom</option>
+                    <option value="*.edu">Education sites</option>
+                    <option value="custom">Custom site</option>
                   </optgroup>
                 </select>
-                <button type="button" class="clear-btn" onclick="modifyQuery('removeSite')">×</button>
-                <span class="material-icons google-chevron">expand_more</span>
+                <button type="button" class="clear-button" id="clearSite" aria-label="Clear site filter" hidden>×</button>
               </div>
-      
-              <div class="combo-container">
-                <select id="fileTypeFilter" onchange="modifyQuery('filetype')">
-                  <option value="" disabled selected>Any File Type</option>
-                  <option value="filetype:pdf">PDF</option>
-                  <option value="filetype:doc">Word Doc</option>
-                  <option value="filetype:xls">Excel</option>
-                  <option value="filetype:ppt">PowerPoint</option>
-                  <option value="filetype:txt">Text</option>
-                  <option value="filetype:">Custom</option>
+              <label class="visually-hidden" for="customSite">Custom site domain</label>
+              <input class="custom-filter" id="customSite" type="text" placeholder="example.com" inputmode="url" hidden>
+            </div>
+            <div class="filter-group">
+              <label for="fileTypeFilter">File type</label>
+              <div class="filter-control">
+                <select id="fileTypeFilter">
+                  <option value="">Any file type</option>
+                  <option value="pdf">PDF</option>
+                  <option value="doc">Word document</option>
+                  <option value="xls">Excel spreadsheet</option>
+                  <option value="ppt">PowerPoint presentation</option>
+                  <option value="txt">Text file</option>
+                  <option value="custom">Custom file type</option>
                 </select>
-                <button type="button" class="clear-btn" onclick="modifyQuery('removeFileType')">×</button>
-                <span class="material-icons google-chevron">expand_more</span>
+                <button type="button" class="clear-button" id="clearFileType" aria-label="Clear file type filter" hidden>×</button>
               </div>
-        </div>
-      </div>
-</div>
-
-    </form>
-  </div>
-  <div id="invisible-footer"></div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const siteFilter = document.getElementById('siteFilter');
-      const fileTypeFilter = document.getElementById('fileTypeFilter');
-      const queryInput = document.getElementById('query');
-      
-      // Auto-focus the search input on page load
-      queryInput.focus();
-
-      [siteFilter, fileTypeFilter].forEach(select => {
-        const clearBtn = select.nextElementSibling;
-        select.addEventListener('change', function() {
-          clearBtn.style.display = this.value ? 'block' : 'none';
-        });
-      });
-    });
-
-    let queryInput = document.getElementById('query');
-    let removeSiteBtn = document.getElementById('removeSiteBtn');
-    let removeFileTypeBtn = document.getElementById('removeFileTypeBtn');
-
-    function searchGoogle(event, openInNewTab) {
-      if (event) event.preventDefault();
-      const query = queryInput.value.trim();
-      if (query) {
-        const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
-        if (openInNewTab) {
-          window.open(googleSearchUrl, '_blank');
-        } else {
-          window.location.href = googleSearchUrl;
-        }
-      }
-    }
-
-    function modifyQuery(type) {
-      let currentQuery = queryInput.value.trim();
-      const selectionStart = queryInput.selectionStart;
-      const selectionEnd = queryInput.selectionEnd;
-      let selectedText = currentQuery.substring(selectionStart, selectionEnd);
-
-      if (type === 'plus' && selectedText) {
-        queryInput.value = currentQuery.substring(0, selectionStart) + 
-                          '+' + selectedText + 
-                          currentQuery.substring(selectionEnd);
-      } else if (type === 'exact' && selectedText) {
-        queryInput.value = currentQuery.substring(0, selectionStart) + 
-                          '"' + selectedText + '"' + 
-                          currentQuery.substring(selectionEnd);
-      } else if (type === 'exclude' && selectedText) {
-        queryInput.value = currentQuery.substring(0, selectionStart) + 
-                          '-' + selectedText + 
-                          currentQuery.substring(selectionEnd);
-      } else if (type === 'removeSelectionFilters' && selectedText) {
-        let cleanedText = selectedText
-          .replace(/["\-+]/g, '')
-          .replace(/\bsite:[^\s]+/g, '')
-          .replace(/\bfiletype:[^\s]+/g, '');
-        queryInput.value = currentQuery.substring(0, selectionStart) + 
-                          cleanedText.trim() + 
-                          currentQuery.substring(selectionEnd);
-      } else if (type === 'site') {
-        const siteFilter = document.getElementById('siteFilter').value;
-        if (siteFilter && siteFilter !== 'site:') {
-          const siteRegex = /\s?site:[^\s]+(\s+-inurl:\([^\)]+\))?/g;
-          currentQuery = currentQuery.replace(siteRegex, '').trim();
-          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + siteFilter;
-        } else if (siteFilter === 'site:' && !currentQuery.includes('site:')) {
-          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + 'site:';
-        }
-      } else if (type === 'removeSite') {
-        const siteRegex = /\s?site:[^\s]+(\s+-inurl:\([^\)]+\))?/g;
-        queryInput.value = currentQuery.replace(siteRegex, '').trim();
-        document.getElementById('siteFilter').value = '';
-      } else if (type === 'filetype') {
-        const fileTypeFilter = document.getElementById('fileTypeFilter').value;
-        if (fileTypeFilter && fileTypeFilter !== 'filetype:') {
-          const fileTypeRegex = /\s?filetype:[^\s]+/g;
-          currentQuery = currentQuery.replace(fileTypeRegex, '').trim();
-          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + fileTypeFilter;
-        } else if (fileTypeFilter === 'filetype:' && !currentQuery.includes('filetype:')) {
-          queryInput.value = currentQuery + (currentQuery ? ' ' : '') + 'filetype:';
-        }
-      } else if (type === 'removeFileType') {
-        const fileTypeRegex = /\s?filetype:[^\s]+/g;
-        queryInput.value = currentQuery.replace(fileTypeRegex, '').trim();
-        document.getElementById('fileTypeFilter').value = '';
-      }
-      updateButtonVisibility();
-      queryInput.focus();
-    }
-
-    function updateButtonVisibility() {
-      const currentQuery = queryInput.value.trim();
-      const siteFilterValue = document.getElementById('siteFilter').value;
-      const fileTypeFilterValue = document.getElementById('fileTypeFilter').value;
-
-      removeSiteBtn.classList.toggle('hidden', !currentQuery.includes('site:') && siteFilterValue === '');
-      removeFileTypeBtn.classList.toggle('hidden', !currentQuery.includes('filetype:') && fileTypeFilterValue === '');
-    }
-
-    updateButtonVisibility();
-
-    
-  </script>
-
-  <script>
-document.addEventListener('DOMContentLoaded', function() {
-  const invisibleFooter = document.getElementById('invisible-footer');
-  let isFullscreen = false;
-  let originalDisplayStates = new Map(); // Store original display states
-
-  invisibleFooter.addEventListener('click', function() {
-    if (!isFullscreen) {
-      // Store original display states before hiding
-      document.querySelectorAll('body > *:not(#invisible-footer)').forEach(el => {
-        originalDisplayStates.set(el, window.getComputedStyle(el).display);
-        el.style.display = 'none';
-      });
-
-      // Enter native full-screen mode
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.mozRequestFullScreen) { // Firefox
-        document.documentElement.mozRequestFullScreen();
-      } else if (document.documentElement.webkitRequestFullscreen) { // Chrome, Safari, Opera
-        document.documentElement.webkitRequestFullscreen();
-      } else if (document.documentElement.msRequestFullscreen) { // IE/Edge
-        document.documentElement.msRequestFullscreen();
-      }
-
-      // Create a full-screen black background div
-      const fullscreenDiv = document.createElement('div');
-      fullscreenDiv.id = 'fullscreen-content';
-      fullscreenDiv.className = 'fullscreen-content';
-      document.body.appendChild(fullscreenDiv);
-
-      isFullscreen = true;
-
-      // Allow clicking the black background to exit full-screen
-      fullscreenDiv.addEventListener('click', exitFullscreen);
-    }
-  });
-
-  // Function to exit full-screen mode
-  function exitFullscreen() {
-    if (document.fullscreenElement || document.webkitFullscreenElement || 
-        document.mozFullScreenElement || document.msFullscreenElement) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.mozCancelFullScreen) { // Firefox
-        document.mozCancelFullScreen();
-      } else if (document.webkitExitFullscreen) { // Chrome, Safari, Opera
-        document.webkitExitFullscreen();
-      } else if (document.msExitFullscreen) { // IE/Edge
-        document.msExitFullscreen();
-      }
-    }
-
-    // Restore original content with stored display states
-    document.querySelectorAll('body > *:not(#invisible-footer):not(#fullscreen-content)').forEach(el => {
-      // Explicitly hide any upload field to prevent it from appearing
-      if (el.matches('input[type="file"]')) {
-        el.style.display = 'none';
-      } else {
-        // Restore the original display state or default to 'block' for known elements
-        const originalDisplay = originalDisplayStates.get(el) || 'block';
-        el.style.display = originalDisplay;
-      }
-    });
-
-    // Remove the full-screen div
-    const fullscreenDiv = document.getElementById('fullscreen-content');
-    if (fullscreenDiv) {
-      fullscreenDiv.remove();
-    }
-
-    // Clear the display states map
-    originalDisplayStates.clear();
-    isFullscreen = false;
-  }
-
-  // Exit full-screen when ESC key is pressed or browser's full-screen is toggled off
-  document.addEventListener('fullscreenchange', function() {
-    if (!document.fullscreenElement && isFullscreen) {
-      exitFullscreen();
-    }
-  });
-  document.addEventListener('webkitfullscreenchange', function() {
-    if (!document.webkitFullscreenElement && isFullscreen) {
-      exitFullscreen();
-    }
-  });
-  document.addEventListener('mozfullscreenchange', function() {
-    if (!document.mozFullScreenElement && isFullscreen) {
-      exitFullscreen();
-    }
-  });
-  document.addEventListener('MSFullscreenChange', function() {
-    if (!document.msFullscreenElement && isFullscreen) {
-      exitFullscreen();
-    }
-  });
-});
-  </script>
-
-</body>
+              <label class="visually-hidden" for="customFileType">Custom file extension</label>
+              <input class="custom-filter" id="customFileType" type="text" placeholder="Extension, such as csv" hidden>
+            </div>
+          </div>
+          <p id="filterStatus" class="visually-hidden" role="status" aria-live="polite"></p>
+        </section>
+      </form>
+    </main>
+    <button id="invisible-footer" type="button" aria-label="Enter distraction-free fullscreen"></button>
+  </body>
 </html>
