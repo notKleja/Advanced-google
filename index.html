@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <title>Advanced Google Search</title>
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="styles.css">
     <script src="app.js" defer></script>
   </head>
@@ -72,12 +73,71 @@
               <div class="filter-control">
                 <select id="fileTypeFilter">
                   <option value="">Any file type</option>
-                  <option value="pdf">PDF</option>
-                  <option value="doc">Word document</option>
-                  <option value="xls">Excel spreadsheet</option>
-                  <option value="ppt">PowerPoint presentation</option>
-                  <option value="txt">Text file</option>
-                  <option value="custom">Custom file type</option>
+                  <optgroup label="Documents and ebooks">
+                    <option value="pdf">PDF</option>
+                    <option value="doc">Word document (DOC)</option>
+                    <option value="docx">Word document (DOCX)</option>
+                    <option value="odt">OpenDocument text (ODT)</option>
+                    <option value="rtf">Rich Text Format (RTF)</option>
+                    <option value="txt">Plain text (TXT)</option>
+                    <option value="epub">Ebook (EPUB)</option>
+                  </optgroup>
+                  <optgroup label="Spreadsheets">
+                    <option value="xls">Excel spreadsheet (XLS)</option>
+                    <option value="xlsx">Excel spreadsheet (XLSX)</option>
+                    <option value="ods">OpenDocument spreadsheet (ODS)</option>
+                    <option value="csv">Comma-separated values (CSV)</option>
+                  </optgroup>
+                  <optgroup label="Presentations">
+                    <option value="ppt">PowerPoint presentation (PPT)</option>
+                    <option value="pptx">PowerPoint presentation (PPTX)</option>
+                    <option value="odp">OpenDocument presentation (ODP)</option>
+                  </optgroup>
+                  <optgroup label="Images and design">
+                    <option value="jpg">JPEG image (JPG)</option>
+                    <option value="png">PNG image</option>
+                    <option value="gif">GIF image</option>
+                    <option value="svg">Scalable vector graphic (SVG)</option>
+                    <option value="webp">WebP image</option>
+                    <option value="tiff">TIFF image</option>
+                    <option value="psd">Photoshop document (PSD)</option>
+                  </optgroup>
+                  <optgroup label="Audio and video">
+                    <option value="mp3">MP3 audio</option>
+                    <option value="wav">WAV audio</option>
+                    <option value="mp4">MP4 video</option>
+                    <option value="webm">WebM video</option>
+                    <option value="mov">QuickTime video (MOV)</option>
+                  </optgroup>
+                  <optgroup label="Archives and disk images">
+                    <option value="zip">ZIP archive</option>
+                    <option value="rar">RAR archive</option>
+                    <option value="7z">7-Zip archive</option>
+                    <option value="tar">TAR archive</option>
+                    <option value="gz">Gzip archive</option>
+                    <option value="iso">Disk image (ISO)</option>
+                  </optgroup>
+                  <optgroup label="Data and configuration">
+                    <option value="json">JSON data</option>
+                    <option value="xml">XML data</option>
+                    <option value="yaml">YAML configuration</option>
+                    <option value="sql">SQL database script</option>
+                    <option value="sqlite">SQLite database</option>
+                  </optgroup>
+                  <optgroup label="Code and web">
+                    <option value="html">HTML document</option>
+                    <option value="css">CSS stylesheet</option>
+                    <option value="js">JavaScript source</option>
+                    <option value="ts">TypeScript source</option>
+                    <option value="py">Python source</option>
+                    <option value="java">Java source</option>
+                    <option value="cpp">C++ source</option>
+                    <option value="go">Go source</option>
+                    <option value="rs">Rust source</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option value="custom">Custom file type</option>
+                  </optgroup>
                 </select>
                 <button type="button" class="clear-button" id="clearFileType" aria-label="Clear file type filter" hidden>×</button>
               </div>

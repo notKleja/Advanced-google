@@ -23,6 +23,17 @@ test('supports custom filters and clearing them', async ({ page }) => {
   await expect(page.locator('#query')).toHaveValue('release notes');
 });
 
+test('groups expanded file types and replaces the active type', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('#fileTypeFilter optgroup')).toHaveCount(9);
+  await expect(page.locator('#fileTypeFilter optgroup').first()).toHaveAttribute('label', 'Documents and ebooks');
+  await page.locator('#query').fill('developer guide');
+  await page.locator('#fileTypeFilter').selectOption('docx');
+  await expect(page.locator('#query')).toHaveValue('developer guide filetype:docx');
+  await page.locator('#fileTypeFilter').selectOption('json');
+  await expect(page.locator('#query')).toHaveValue('developer guide filetype:json');
+});
+
 test('quotes selected text and creates the expected search URL', async ({ page, context }) => {
   let destination = '';
   await context.route('https://www.google.com/search?*', async (route) => {
